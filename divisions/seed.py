@@ -68,3 +68,77 @@ def seed_ibjjf_weight_classes():
     session.commit()
     session.close()
     print("[+] IBJJF weight classes seeded.")
+
+
+def seed_adcc_weight_classes():
+    session = SessionLocal()
+
+    if session.query(WeightStandard).filter_by(name="ADCC").first():
+        print("[+] ADCC weight classes already seeded.")
+        session.close()
+        return
+
+    adcc = WeightStandard(name="ADCC", description="Abu Dhabi Combat Club Submission Wrestling World Championship")
+    session.add(adcc)
+    session.flush()
+
+    weight_classes = [
+        WeightClass(name="Under 66kg", gender="Male", format="NoGi", min_weight_kg=None, max_weight_kg=66.0, standard_id=adcc.id),
+        WeightClass(name="Under 77kg", gender="Male", format="NoGi", min_weight_kg=66.0, max_weight_kg=77.0, standard_id=adcc.id),
+        WeightClass(name="Under 88kg", gender="Male", format="NoGi", min_weight_kg=77.0, max_weight_kg=88.0, standard_id=adcc.id),
+        WeightClass(name="Under 99kg", gender="Male", format="NoGi", min_weight_kg=88.0, max_weight_kg=99.0, standard_id=adcc.id),
+        WeightClass(name="Over 99kg", gender="Male", format="NoGi", min_weight_kg=99.0, max_weight_kg=None, standard_id=adcc.id),
+
+        WeightClass(name="Under 60kg", gender="Female", format="NoGi", min_weight_kg=None, max_weight_kg=60.0, standard_id=adcc.id),
+        WeightClass(name="Over 60kg", gender="Female", format="NoGi", min_weight_kg=60.0, max_weight_kg=None, standard_id=adcc.id),
+    ]
+
+    session.add_all(weight_classes)
+    session.commit()
+    session.close()
+    print("[+] ADCC weight classes seeded.")
+
+
+def seed_grappling_industries_weight_classes():
+    session = SessionLocal()
+
+    if session.query(WeightStandard).filter_by(name="Grappling Industries").first():
+        print("[+] Grappling Industries weight classes already seeded.")
+        session.close()
+        return
+
+    gi_standard = WeightStandard(
+        name="Grappling Industries",
+        description="Round-robin format with Gi and NoGi divisions"
+    )
+    session.add(gi_standard)
+    session.flush()
+
+    weight_classes = [
+        # Male Gi
+        WeightClass(name="Rooster", gender="Male", format="Gi", max_weight_kg=57.5, standard_id=gi_standard.id),
+        WeightClass(name="Light Feather", gender="Male", format="Gi", min_weight_kg=57.5, max_weight_kg=64.0, standard_id=gi_standard.id),
+        WeightClass(name="Feather", gender="Male", format="Gi", min_weight_kg=64.0, max_weight_kg=70.0, standard_id=gi_standard.id),
+        WeightClass(name="Light", gender="Male", format="Gi", min_weight_kg=70.0, max_weight_kg=76.0, standard_id=gi_standard.id),
+        WeightClass(name="Middle", gender="Male", format="Gi", min_weight_kg=76.0, max_weight_kg=82.3, standard_id=gi_standard.id),
+        WeightClass(name="Medium Heavy", gender="Male", format="Gi", min_weight_kg=82.3, max_weight_kg=88.3, standard_id=gi_standard.id),
+        WeightClass(name="Heavy", gender="Male", format="Gi", min_weight_kg=88.3, max_weight_kg=94.3, standard_id=gi_standard.id),
+        WeightClass(name="Super Heavy", gender="Male", format="Gi", min_weight_kg=94.3, max_weight_kg=100.5, standard_id=gi_standard.id),
+        WeightClass(name="Ultra Heavy", gender="Male", format="Gi", min_weight_kg=100.5, max_weight_kg=None, standard_id=gi_standard.id),
+
+        # Female Gi
+        WeightClass(name="Light Feather", gender="Female", format="Gi", max_weight_kg=53.5, standard_id=gi_standard.id),
+        WeightClass(name="Feather", gender="Female", format="Gi", min_weight_kg=53.5, max_weight_kg=58.5, standard_id=gi_standard.id),
+        WeightClass(name="Light", gender="Female", format="Gi", min_weight_kg=58.5, max_weight_kg=64.0, standard_id=gi_standard.id),
+        WeightClass(name="Middle", gender="Female", format="Gi", min_weight_kg=64.0, max_weight_kg=69.0, standard_id=gi_standard.id),
+        WeightClass(name="Medium Heavy", gender="Female", format="Gi", min_weight_kg=69.0, max_weight_kg=74.0, standard_id=gi_standard.id),
+        WeightClass(name="Heavy", gender="Female", format="Gi", min_weight_kg=74.0, max_weight_kg=None, standard_id=gi_standard.id),
+
+        # NoGi (same structure, format="NoGi")
+        # You can duplicate the above with format="NoGi" if Grappling Industries offers both
+    ]
+
+    session.add_all(weight_classes)
+    session.commit()
+    session.close()
+    print("[+] Grappling Industries weight classes seeded.")
