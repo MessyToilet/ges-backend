@@ -1,5 +1,5 @@
 from db.session import SessionLocal
-from db.models import WeightStandard, WeightClass
+from db.models import WeightStandard, WeightClass, RuleSet
 
 
 def seed_ibjjf_weight_classes():
@@ -65,9 +65,22 @@ def seed_ibjjf_weight_classes():
 
 
     session.add_all(weight_classes)
+
+    print("[+] IBJJF weight classes seeded.")
+    print("[-] Adding IBJJF rule set")
+
+    session.add(RuleSet(
+        name="IBJJF",
+        description="IBJJF ruleset",
+        match_duration_minutes=5,
+        overtime_format="None",
+        scoring_notes="Points for takedown, guard pass, mount, back control",
+        standard_id=ibjjf.id
+    ))
+
+    print("[+] IBJJF rule set added")
     session.commit()
     session.close()
-    print("[+] IBJJF weight classes seeded.")
 
 
 def seed_adcc_weight_classes():
@@ -94,10 +107,22 @@ def seed_adcc_weight_classes():
     ]
 
     session.add_all(weight_classes)
+
+    print("[+] ADCC weight classes seeded.")
+    print("[-] Adding ADCC rule set")
+
+    session.add(RuleSet(
+        name="ADCC",
+        description="ADCC ruleset",
+        match_duration_minutes=6,
+        overtime_format="3-minute overtime",
+        scoring_notes="First half no points, second half points",
+        standard_id=adcc.id
+    ))
+
+    print("[+] ADCC rule set added")
     session.commit()
     session.close()
-    print("[+] ADCC weight classes seeded.")
-
 
 def seed_grappling_industries_weight_classes():
     session = SessionLocal()
@@ -139,6 +164,19 @@ def seed_grappling_industries_weight_classes():
     ]
 
     session.add_all(weight_classes)
+
+    print("[+] Grappling Industries weight classes seeded.")
+    print("[-] Adding Grappling Industries Rule Set")
+
+    session.add(RuleSet(
+        name="Grappling Industries",
+        description="Round-robin format with IBJJF-style scoring",
+        match_duration_minutes=5,
+        overtime_format="None",
+        scoring_notes="IBJJF-style points, no advantages",
+        standard_id=gi_standard.id
+    ))
+
+    print("[+] Grappling Industries rule set added")
     session.commit()
     session.close()
-    print("[+] Grappling Industries weight classes seeded.")

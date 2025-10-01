@@ -39,8 +39,24 @@ class Match(Base):
     fighter_b_id = Column(Integer, ForeignKey("fighters.id"))
     winner_id    = Column(Integer, ForeignKey("fighters.id"))
     division_id  = Column(Integer, ForeignKey("divisions.id"))
-    ruleset      = Column(String, nullable=True)
+    rule_set_id  = Column(Integer, ForeignKey("rule_sets.id"))
+    rule_set    = relationship("RuleSet", back_populates="matches")
+
     date         = Column(DateTime, default=datetime.utcnow)
+
+class RuleSet(Base):
+    __tablename__ = "rule_sets"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+    description = Column(String)
+    match_duration_minutes = Column(Integer)
+    overtime_format = Column(String)
+    scoring_notes = Column(String)
+    standard_id = Column(Integer, ForeignKey("weight_standards.id"), nullable=True)
+
+    standard = relationship("WeightStandard", back_populates="rule_sets")
+    matches = relationship("Match", back_populates="rule_set")
 
 class WeightStandard(Base):
     __tablename__ = "weight_standards"
@@ -48,6 +64,9 @@ class WeightStandard(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     description = Column(Text)
+
+    weight_classes = relationship("WeightClass", back_populates="standard")
+    rule_sets = relationship("RuleSet", back_populates="standard")
 
 class WeightClass(Base):
     __tablename__ = "weight_classes"
@@ -60,8 +79,7 @@ class WeightClass(Base):
     max_weight_kg = Column(Float, nullable=True)
     standard_id = Column(Integer, ForeignKey("weight_standards.id"))
 
-    standard = relationship("WeightStandard")
-
+    standard = relationship("WeightStandard", back_populates="weight_classes")
 
 class EloRating(Base):
     __tablename__ = "elo_ratings"

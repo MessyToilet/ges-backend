@@ -1,6 +1,6 @@
 import pytest
 from db.session import SessionLocal
-from db.models import WeightStandard, WeightClass
+from db.models import WeightStandard, WeightClass, RuleSet
 
 
 @pytest.fixture
@@ -29,3 +29,10 @@ def test_ibjjf_weight_classes_exist(db_session):
 
     assert "Gi" in formats and "NoGi" in formats, "Missing Gi or NoGi formats"
     assert "Male" in genders and "Female" in genders, "Missing Male or Female divisions"
+
+def test_ibjjf_standard_and_ruleset(db_session):
+    ibjjf = db_session.query(WeightStandard).filter_by(name="IBJJF").first()
+    assert ibjjf is not None, "IBJJF standard not found"
+
+    ruleset = db_session.query(RuleSet).filter_by(name="IBJJF", standard_id=ibjjf.id).first()
+    assert ruleset is not None, "IBJJF ruleset not found or not linked to standard"
