@@ -7,11 +7,11 @@ class Fighter(Base):
     __tablename__ = "fighters"
 
     id                 = Column(Integer, primary_key=True, index=True)
-    phone_number       = Column(Integer, nullable=True)
+    phone_number       = Column(Integer, nullable=False)
     email              = Column(String, nullable=True)
-    birthday           = Column(String, nullable=False)
+    birthday           = Column(String, nullable=True)
     first_name         = Column(String, nullable=False)
-    last_name          = Column(String, nullable=True)
+    last_name          = Column(String, nullable=False)
     gender             = Column(String, nullable=False)
     weight             = Column(Float, nullable=False)
     on_peds            = Column(Boolean, default=False)
